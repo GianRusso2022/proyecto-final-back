@@ -1,0 +1,32 @@
+<h2 id='welcomeText'>Welcome to the chat!</h2>
+
+{{#if user}}
+<p id='userName'>
+  {{user.firstName}}, write and send your message!
+</p>
+
+<div>
+  <input id='messageInput' type='text' />
+  <button id='submitBtn' class='submitBtn'>Send</button>
+</div>
+
+<div id="auxStorage" data-user={{user.firstName}}-{{user.id}}></div>
+
+{{/if}}
+
+
+{{#unless user}}
+<div>
+  <p>
+    Only users are allowed to chat.<a href='/signup'>Create an acount</a>
+    or
+    <a href='/'>log in</a>.
+  </p>
+</div>
+{{/unless}}
+
+
+
+<div id='messagesContainer' class='messagesContainer'></div>
+<script src='/socket.io/socket.io.js'></script>
+<script src='/js/chat.js'></script>

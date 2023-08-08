@@ -1,0 +1,122 @@
+paths:
+  /api/users:
+    post:
+      summary: Creates a new user
+      description: This endpoint will create a new user
+      operationID: createUser
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/requestUser'
+      responses:
+        '201':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/responseUser'
+        '4XX':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+        '5XX':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error'
+  /api/users/:email:
+    get:
+      tags:
+        - Users
+  /api/users/getCurrentUser:
+    get:
+      operationId: getCurrentUser
+      tags:
+        - Users
+  /api/users/sendPwResetEmail:
+    get:
+      operationId: sendPwResetEmail
+      tags:
+        - Users
+  /api/users/password/reset/:token:
+    get:
+      operationId: verifyPasswordResetToken
+      tags:
+        - Users
+  /api/users/password/reset:
+    post:
+      operationId: resetPassword
+      tags:
+        - Users
+  /api/users/permission/change:
+    put:
+      operationId: changeRole
+      tags:
+        - Users
+components:
+  schemas:
+    requestUser:
+      type: object
+      required:
+        - firstName
+        - lastName
+        - password
+        - email
+        - age
+      properties:
+        firstName:
+          type: string
+          example: Gian
+        lastName:
+          type: string
+          example: Russo
+        password:
+          type: string
+          format: password
+          example: gian123
+        email:
+          type: string
+          format: email
+          example: gian@example.com
+        age:
+          type: integer
+          example: 26
+      example:
+        firstName: Gian
+        lastName: Russo
+        password: Gian123
+        email: russo@live.com
+        age: 26
+    responseUser:
+      allOf:
+        - $ref: '#/components/schemas/requestUser'
+          not:
+            properties:
+              password:
+                type: string
+        - id:
+            type: string
+      example:
+        firstName: Gian
+        lastName: Russo
+        password: gian123
+        email: russogian@live.com
+        age: 26
+        id: 4211e05660514c94ff1b06
+    error:
+      type: object
+      properties:
+        statusCode:
+          type: number
+          description: The http response status code
+        error:
+          type: string
+          description: A generic error message that indicates the kind of error
+      example:
+        statusCode: 404
+        error: Resource not found
